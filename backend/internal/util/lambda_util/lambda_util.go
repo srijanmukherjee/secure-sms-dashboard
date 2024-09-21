@@ -17,7 +17,11 @@ func HandleResponse(ctx context.Context, returnValue interface{}, err error) (ev
 		return HandleError(ctx, err), nil
 	}
 
-	jsonBytes, err := json.Marshal(map[string]interface{}{"data": returnValue, "statusCode": exception.STATUS_OK.Name})
+	jsonBytes, err := json.Marshal(map[string]interface{}{
+		"data":       returnValue,
+		"statusCode": exception.STATUS_OK.Name,
+		"requestId":  ctx.Value(request_context.RequestIdKey).(string),
+	})
 	if err != nil {
 		return HandleError(ctx, err), nil
 	}
@@ -60,7 +64,7 @@ func handleHttpException(ctx context.Context, exc exception.HttpException) event
 			StatusCode: exception.STATUS_INTERNAL_SERVER_ERROR.Value,
 			Headers:    map[string]string{"Content-Type": "application/json", "X-Request-Id": requestId},
 			Body: fmt.Sprintf(
-				`{ "statusCode": "%v", "message": "Something went wrong", "requestDd": "%v" }`,
+				`{ "statusCode": "%v", "message": "Something went wrong", "requestId": "%v" }`,
 				exception.STATUS_INTERNAL_SERVER_ERROR.Name,
 				requestId),
 		}
