@@ -32,6 +32,8 @@ func HandleResponse(ctx context.Context, returnValue interface{}, err error) (ev
 }
 
 func HandleError(ctx context.Context, err error) events.APIGatewayProxyResponse {
+	logger.Log(ctx, "Error: %v", err)
+
 	if exc, ok := err.(exception.HttpException); ok {
 		return handleHttpException(ctx, exc)
 	}
