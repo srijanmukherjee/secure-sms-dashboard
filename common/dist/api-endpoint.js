@@ -1,4 +1,7 @@
-export const ApiEndpoint = {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ApiEndpoint = void 0;
+exports.ApiEndpoint = {
     pairInitiate: '/pair/initiate',
     pairInfo: '/pair/connection/:connectionId',
     pairAccept: '/pair/connection/:connectionId/accept',
@@ -7,4 +10,4 @@ export const ApiEndpoint = {
     listSms: '/sms/:connectionId',
     addSms: '/sms/:connectionId',
     unpair: '/unpair/:connectionId'
-} as const;
+};

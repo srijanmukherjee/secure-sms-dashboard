@@ -1,6 +1,6 @@
 import { AddSmsRequest, ApiResponse, ApiStatusCode, ConnectionInfoResponse, HttpStatusCode, ListSmsQueryParams, ListSmsResponse, PairAcceptRequest, PairAcceptResponse, PairInfoResponse, PairInitiateRequest, PairInitiateResponse, UnpairResponse, UpdateConnectionStateRequest, UpdateConnectionStateResponse } from "./api";
 import { ApiClient, HttpResponse } from "./api-client";
-import ApiEndpoint from "./api-endpoint";
+import { ApiEndpoint } from "./api-endpoint";
 import { ApiConnectorException, Exception } from "./exception";
 
 export function pairInitiate(client: ApiClient, request: PairInitiateRequest): Promise<PairInitiateResponse> {
