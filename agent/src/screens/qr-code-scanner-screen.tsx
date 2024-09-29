@@ -46,6 +46,7 @@ export function QrCodeScannerScreen() {
     }
 
     timeoutId.current = setTimeout(() => {
+      previousCode.current = '';
       navigation.navigate('flow.pairing', {
         connectionId: code,
       });
