@@ -1,12 +1,22 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {StatusBar, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 import MastSvg from '@assets/img/home_mast.svg';
 import {Anchor} from 'src/components/anchor';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigation} from 'src/App';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 export function DisconnectedHomeScreen() {
+  const navigation = useNavigation<StackNavigation>();
+
+  const handleLinkDeviceButtonPress = () => {
+    navigation.navigate('flow.disconnected.scan');
+  };
+
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor={'transparent'} translucent barStyle={'dark-content'} />
       <View style={styles.mastContainer}>
         <MastSvg preserveAspectRatio="xMidYMid slice" />
       </View>
@@ -16,10 +26,10 @@ export function DisconnectedHomeScreen() {
           Learn more
         </Anchor>
       </View>
-      <TouchableOpacity style={styles.linkButton}>
+      <TouchableOpacity style={styles.linkButton} onPress={handleLinkDeviceButtonPress}>
         <Text style={styles.linkButtonText}>Link a device</Text>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 }
 

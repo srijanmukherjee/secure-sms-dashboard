@@ -1,6 +1,7 @@
 import React from 'react';
-import {Linking, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Linking, StatusBar, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {PermissionFallbackProps} from '../types/permission-request';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 function SettingsButton() {
   const handlePress = () => {
@@ -16,7 +17,8 @@ function SettingsButton() {
 
 export function RequestPermissionScreen({request, status, requestPermission}: PermissionFallbackProps) {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor={'transparent'} translucent barStyle={'dark-content'} />
       <View style={styles.card}>
         <Text style={styles.heading}>Permission Required</Text>
         <Text style={styles.name}>{request.name}</Text>
@@ -29,7 +31,7 @@ export function RequestPermissionScreen({request, status, requestPermission}: Pe
           <SettingsButton />
         )}
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
