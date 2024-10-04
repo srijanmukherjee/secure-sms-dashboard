@@ -6,6 +6,7 @@ import {Anchor} from 'src/components/anchor';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigation} from 'src/App';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {Apptheme} from 'src/config/theme';
 
 export function DisconnectedHomeScreen() {
   const navigation = useNavigation<StackNavigation>();
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
   },
   linkButton: {
     marginTop: 20,
-    backgroundColor: '#40BD77',
+    backgroundColor: Apptheme.primaryColor,
     borderRadius: 999,
     paddingVertical: 10,
     alignItems: 'center',
