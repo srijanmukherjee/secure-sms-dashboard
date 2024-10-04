@@ -54,7 +54,7 @@ export type PairInitiateResponse = {
 export type PairInfoResponse = {
     connectionId: string;
     userAgent: string;
-    ipLocation: IpLocation;
+    location: IpLocation;
     supportedAlgorithms: string[];
     publicKey: string;
     expiresAt: number;
