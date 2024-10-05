@@ -2072,17 +2072,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-async-storage/async-storage@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@react-native-async-storage/async-storage@npm:2.0.0"
-  dependencies:
-    merge-options: ^3.0.4
-  peerDependencies:
-    react-native: ^0.0.0-0 || >=0.65 <1.0
-  checksum: 7007a411f13988594a3f9b5ebb29f1554ab65ff2bd90814fa8b125fa68b69c431bdfcd38769ae2dcb6505aec2bad9296f0a0fa1ac8f123007eda49c826f2d138
-  languageName: node
-  linkType: hard
-
 "@react-native-community/cli-clean@npm:14.1.0":
   version: 14.1.0
   resolution: "@react-native-community/cli-clean@npm:14.1.0"
@@ -3203,7 +3192,6 @@ __metadata:
     "@babel/core": ^7.20.0
     "@babel/preset-env": ^7.20.0
     "@babel/runtime": ^7.20.0
-    "@react-native-async-storage/async-storage": ^2.0.0
     "@react-native/babel-preset": 0.75.3
     "@react-native/eslint-config": 0.75.3
     "@react-native/metro-config": 0.75.3
@@ -3220,9 +3208,11 @@ __metadata:
     common: "file:../common"
     eslint: ^8.19.0
     jest: ^29.6.3
+    lottie-react-native: ^7.0.0
     prettier: 2.8.8
     react: 18.3.1
     react-native: 0.75.3
+    react-native-background-actions: ^4.0.1
     react-native-config: ^1.5.3
     react-native-device-info: ^13.0.0
     react-native-safe-area-context: ^4.11.0
@@ -4087,8 +4077,8 @@ __metadata:
 
 "common@file:../common::locator=agent%40workspace%3A.":
   version: 1.0.0
-  resolution: "common@file:../common#../common::hash=e90685&locator=agent%40workspace%3A."
-  checksum: 2b485c1a6a635b609767b051c8d027fd5c967ef5534fade9c348c0dff6b717fd03263c6f7618cf2b2fb60edeccc9379a73c977051012ae975aa50830692c7000
+  resolution: "common@file:../common#../common::hash=7cb0b7&locator=agent%40workspace%3A."
+  checksum: f997d3fda0c5bf0313e839ddaa85955d4a76d87b60875244488d09df67809ccee33a67d1bc8a3a956696feff67ce8b6bd8d533c1f1f4f92f7ec156c112a23139
   languageName: node
   linkType: hard
 
@@ -5102,6 +5092,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eventemitter3@npm:^4.0.7":
+  version: 4.0.7
+  resolution: "eventemitter3@npm:4.0.7"
+  checksum: 1875311c42fcfe9c707b2712c32664a245629b42bb0a5a84439762dd0fd637fc54d078155ea83c2af9e0323c9ac13687e03cfba79b03af9f40c89b4960099374
+  languageName: node
+  linkType: hard
+
 "execa@npm:^5.0.0, execa@npm:^5.1.1":
   version: 5.1.1
   resolution: "execa@npm:5.1.1"
@@ -6085,13 +6082,6 @@ __metadata:
   version: 3.0.3
   resolution: "is-path-inside@npm:3.0.3"
   checksum: abd50f06186a052b349c15e55b182326f1936c89a78bf6c8f2b707412517c097ce04bc49a0ca221787bc44e1049f51f09a2ffb63d22899051988d3a618ba13e9
-  languageName: node
-  linkType: hard
-
-"is-plain-obj@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "is-plain-obj@npm:2.1.0"
-  checksum: cec9100678b0a9fe0248a81743041ed990c2d4c99f893d935545cfbc42876cbe86d207f3b895700c690ad2fa520e568c44afc1605044b535a7820c1d40e38daa
   languageName: node
   linkType: hard
 
@@ -7106,6 +7096,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lottie-react-native@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "lottie-react-native@npm:7.0.0"
+  peerDependencies:
+    "@dotlottie/react-player": ^1.6.1
+    "@lottiefiles/react-lottie-player": ^3.5.3
+    react: "*"
+    react-native: ">=0.46"
+    react-native-windows: ">=0.63.x"
+  peerDependenciesMeta:
+    "@dotlottie/react-player":
+      optional: true
+    "@lottiefiles/react-lottie-player":
+      optional: true
+    react-native-windows:
+      optional: true
+  checksum: b81d716ecbdc1ce51c642acd8a5d8f522b840f73f4472ca77f67f429c8cb06bd2ab2d92a12868a8bc642b36211bee652c16afbbb717de798d3d4865766556a38
+  languageName: node
+  linkType: hard
+
 "lower-case@npm:^2.0.2":
   version: 2.0.2
   resolution: "lower-case@npm:2.0.2"
@@ -7211,15 +7221,6 @@ __metadata:
   version: 5.2.1
   resolution: "memoize-one@npm:5.2.1"
   checksum: a3cba7b824ebcf24cdfcd234aa7f86f3ad6394b8d9be4c96ff756dafb8b51c7f71320785fbc2304f1af48a0467cbbd2a409efc9333025700ed523f254cb52e3d
-  languageName: node
-  linkType: hard
-
-"merge-options@npm:^3.0.4":
-  version: 3.0.4
-  resolution: "merge-options@npm:3.0.4"
-  dependencies:
-    is-plain-obj: ^2.1.0
-  checksum: d86ddb3dd6e85d558dbf25dc944f3527b6bacb944db3fdda6e84a3f59c4e4b85231095f58b835758b9a57708342dee0f8de0dffa352974a48221487fe9f4584f
   languageName: node
   linkType: hard
 
@@ -8429,6 +8430,17 @@ __metadata:
   version: 17.0.2
   resolution: "react-is@npm:17.0.2"
   checksum: 9d6d111d8990dc98bc5402c1266a808b0459b5d54830bbea24c12d908b536df7883f268a7868cfaedde3dd9d4e0d574db456f84d2e6df9c4526f99bb4b5344d8
+  languageName: node
+  linkType: hard
+
+"react-native-background-actions@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "react-native-background-actions@npm:4.0.1"
+  dependencies:
+    eventemitter3: ^4.0.7
+  peerDependencies:
+    react-native: ">=0.47.0"
+  checksum: 101cf491a3d0f40abb1189238d6911f544a69cc14b13734dac485600a1cd013d2c452a75d13579a66104ad43e4998bb8b927b982d7ff5c6e0074329e2eae1738
   languageName: node
   linkType: hard
 

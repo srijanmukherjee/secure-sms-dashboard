@@ -10,6 +10,10 @@ import {browsers} from 'src/util/browsers';
 import ExclaimationIcon from '@assets/img/icons/triangle-exclaimation.svg';
 import {Apptheme} from 'src/config/theme';
 import {DeviceInfoService} from 'src/services/device-info';
+import {useConnectionContext} from 'src/context/connection-context';
+import {translateError} from 'src/util/translators';
+import {Loader} from 'src/components/loader';
+import {SuccessLottie} from 'src/components/success-lottie';
 
 type RouteParams = {
   connectionId: string;
@@ -21,12 +25,8 @@ type Props = {
 
 async function buildPairAcceptRequest(): Promise<PairAcceptRequest> {
   return {
-    agentVersion: 'DEBUG',
-    deviceInfo: {
-      brand: await DeviceInfoService.getBrand(),
-      buildId: await DeviceInfoService.getBuildId(),
-      name: await DeviceInfoService.getDeviceName(),
-    },
+    agentVersion: DeviceInfoService.getVersion(),
+    deviceInfo: await DeviceInfoService.getDeviceInfo(),
     supportedAlgorithms: [],
   };
 }
@@ -35,6 +35,9 @@ export function PairingScreen({route}: Props) {
   const {connectionId} = route.params;
   const [loading, data, exception] = useApi(() => getPairInfo(client, connectionId), [connectionId]);
   const [isPairing, setPairing] = useState<boolean>(false);
+  const [isPaired, setPaired] = useState<boolean>(false);
+  const [pairingException, setPairingException] = useState<Exception | null>(null);
+  const {setConnectionInfo} = useConnectionContext();
   const browser = useBrowser(data?.userAgent);
   const BrowserIcon = browsers[browser].icon;
   const navigation = useNavigation();
@@ -46,17 +49,31 @@ export function PairingScreen({route}: Props) {
     }
 
     setPairing(true);
+    setPairingException(null);
 
     try {
-      const response = await pairAccept(client, data.connectionId, await buildPairAcceptRequest());
+      const pairAcceptRequest = await buildPairAcceptRequest();
+      const response = await pairAccept(client, data.connectionId, pairAcceptRequest);
       if (response.connectionId !== data.connectionId) {
+        console.error(`Expected connection id ${data.connectionId} but received ${response.connectionId}`);
         throw new Exception('connection id mismatch');
       }
-    } catch (ex) {
-      if (ex instanceof Exception) {
-      } else {
-      }
+      setPaired(true);
+    } catch (error) {
+      setPairingException(translateError(error));
+    } finally {
+      setPairing(false);
     }
+  };
+
+  const handleSuccessAnimationFinish = () => {
+    setTimeout(() => {
+      try {
+        setConnectionInfo({connectionId});
+      } catch (ex) {
+        console.error(ex);
+      }
+    }, 500);
   };
 
   if (isPairing) {
@@ -64,8 +81,29 @@ export function PairingScreen({route}: Props) {
       <SafeAreaView style={styles.container}>
         <StatusBar backgroundColor={'transparent'} translucent barStyle={'dark-content'} />
         <View style={styles.centerContainer}>
-          {/* TODO: loader */}
-          <Text style={styles.textCenter}>Pairing...</Text>
+          <Loader />
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  if (isPaired) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <StatusBar backgroundColor={'transparent'} translucent barStyle={'dark-content'} />
+        <View style={styles.centerContainer}>
+          <SuccessLottie onAnimationFinish={handleSuccessAnimationFinish} />
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  if (pairingException) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <StatusBar backgroundColor={'transparent'} translucent barStyle={'dark-content'} />
+        <View style={styles.centerContainer}>
+          <Text style={styles.textCenter}>{pairingException.message}</Text>
         </View>
       </SafeAreaView>
     );
@@ -76,7 +114,7 @@ export function PairingScreen({route}: Props) {
       <StatusBar backgroundColor={'transparent'} translucent barStyle={'dark-content'} />
       {loading ? (
         <View style={styles.centerContainer}>
-          <Text style={styles.textCenter}>Loading</Text>
+          <Loader />
         </View>
       ) : exception !== null ? (
         <View style={styles.centerContainer}>
