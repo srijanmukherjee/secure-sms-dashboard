@@ -14,6 +14,7 @@ import {useConnectionContext} from 'src/context/connection-context';
 import {translateError} from 'src/util/translators';
 import {Loader} from 'src/components/loader';
 import {SuccessLottie} from 'src/components/success-lottie';
+import {useRepository} from 'src/context/database-context';
 
 type RouteParams = {
   connectionId: string;
@@ -33,6 +34,7 @@ async function buildPairAcceptRequest(): Promise<PairAcceptRequest> {
 
 export function PairingScreen({route}: Props) {
   const {connectionId} = route.params;
+  const contextRepository = useRepository('ContextRepository');
   const [loading, data, exception] = useApi(() => getPairInfo(client, connectionId), [connectionId]);
   const [isPairing, setPairing] = useState<boolean>(false);
   const [isPaired, setPaired] = useState<boolean>(false);
@@ -58,6 +60,22 @@ export function PairingScreen({route}: Props) {
         console.error(`Expected connection id ${data.connectionId} but received ${response.connectionId}`);
         throw new Exception('connection id mismatch');
       }
+
+      const dbOperations: Promise<void>[] = [];
+      dbOperations.push(
+        contextRepository.upsertOne({
+          key: 'encryption_key',
+          value: data.publicKey,
+        }),
+      );
+      dbOperations.push(
+        contextRepository.upsertOne({
+          key: 'active_connection_id',
+          value: data.connectionId,
+        }),
+      );
+      await Promise.all(dbOperations);
+
       setPaired(true);
     } catch (error) {
       setPairingException(translateError(error));

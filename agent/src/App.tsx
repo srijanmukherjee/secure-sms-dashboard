@@ -10,6 +10,8 @@ import {NavigationContainer, NavigationProp} from '@react-navigation/native';
 import {QrCodeScannerScreen} from './screens/qr-code-scanner-screen';
 import {PairingScreen} from './screens/pairing-screen';
 import {ConnectionContextProvider} from './context/connection-context';
+import {buildSqliteDatabase} from './database/sqlite';
+import {DatabaseContextProvider} from './context/database-context';
 
 type ScreenNames = ['flow.disconnected.home', 'flow.disconnected.scan'];
 export type RootStackParamList = Record<ScreenNames[number], undefined> & {
@@ -25,12 +27,16 @@ const stackNavigatorOptions: NativeStackNavigationOptions = {
   headerShown: false,
 };
 
+const databaseProvider = () => buildSqliteDatabase();
+
 function App(): React.JSX.Element {
   return (
     <NavigationContainer>
       <View style={styles.container}>
         <PermissionBoundary requests={requiredPermissions} fallback={RequestPermissionScreen}>
-          <ConnectionContextProvider disconnected={<DisconnectedNavigator />} connected={<ConnectedNavigator />} />
+          <DatabaseContextProvider provider={databaseProvider}>
+            <ConnectionContextProvider disconnected={<DisconnectedNavigator />} connected={<ConnectedNavigator />} />
+          </DatabaseContextProvider>
         </PermissionBoundary>
       </View>
     </NavigationContainer>
@@ -48,6 +54,7 @@ function DisconnectedNavigator() {
 }
 
 function ConnectedNavigator() {
+  console.log('connected');
   return (
     <Stack.Navigator initialRouteName="flow.disconnected.home" screenOptions={stackNavigatorOptions}>
       <Stack.Screen name="flow.disconnected.home" component={DisconnectedHomeScreen} />
